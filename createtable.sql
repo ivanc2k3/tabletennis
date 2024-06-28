@@ -195,7 +195,7 @@ CREATE TABLE IF NOT EXISTS public.game_player (
     serveId INT NOT NULL,
     gameId INT NOT NULL,
     playerId INT NOT NULL,
-    name VARCHAR(30) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     sexId INT NOT NULL,
     nationalityId INT NOT NULL,
     worldRanking INT NOT NULL,
@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS public.game_player_item (
     actionId INT NOT NULL,
     outcomeId INT NOT NULL,
     let INT NOT NULL, -- origianl: stopGamePlayerId
-    goodId INT NOT NULL DEFAULT 0,
+    -- goodId INT NOT NULL DEFAULT 0,
     positionId INT NOT NULL DEFAULT 0,
     FOREIGN KEY (gamePlayerId)
         REFERENCES game_player(id)
@@ -309,7 +309,7 @@ CREATE TABLE IF NOT EXISTS public.game_player_double_item (
     actionId INT NOT NULL,
     outcomeId INT NOT NULL,
     let INT NOT NULL, -- origianl: stopGamePlayerId
-    goodId INT NOT NULL DEFAULT 0,
+    -- goodId INT NOT NULL DEFAULT 0,
     FOREIGN KEY (gamePlayerId)
         REFERENCES game_player(id)
         ON DELETE CASCADE,
