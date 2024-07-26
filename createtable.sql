@@ -177,9 +177,11 @@ CREATE TABLE IF NOT EXISTS public.game (
     levelId INT NOT NULL,
     builderId1 INT,
     builderId2 INT,
-    notes VARCHAR(4000),
+    notes VARCHAR(4500),
     groupId INT NOT NULL DEFAULT 11,
-    isAnalyzed BOOLEAN DEFAULT 0, --  new
+    -- isAnalyzed BOOLEAN DEFAULT 0, --  new
+    videoType VARCHAR(5) NOT NULL,
+    videoUrl VARCHAR(100) NOT NULL,
     FOREIGN KEY (formatId)
         REFERENCES game_format_type(id),
     FOREIGN KEY (serveId)
@@ -330,3 +332,9 @@ CREATE TABLE IF NOT EXISTS public.game_player_double_item (
     FOREIGN KEY (outcomeId)
         REFERENCES outcome_type(id)
 )
+
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.game
+    OWNER to wasn;
