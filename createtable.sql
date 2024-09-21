@@ -179,9 +179,9 @@ CREATE TABLE IF NOT EXISTS public.game (
     builderId2 INT,
     notes VARCHAR(4500),
     groupId INT NOT NULL DEFAULT 11,
-    -- isAnalyzed BOOLEAN DEFAULT 0, --  new
     videoType VARCHAR(5) NOT NULL,
     videoUrl VARCHAR(100) NOT NULL,
+    isDelete INT NOT NULL DEFAULT 0,
     FOREIGN KEY (formatId)
         REFERENCES game_format_type(id),
     FOREIGN KEY (serveId)
@@ -263,8 +263,9 @@ CREATE TABLE IF NOT EXISTS public.game_player_item (
     actionId INT NOT NULL,
     outcomeId INT NOT NULL,
     let INT NOT NULL, -- origianl: stopGamePlayerId
-    -- goodId INT NOT NULL DEFAULT 0,
+    goodId INT NOT NULL DEFAULT 0,
     positionId INT NOT NULL DEFAULT 0,
+    timer DECIMAL(26,20) NOT NULL DEFAULT 0.00000000000000000000,
     FOREIGN KEY (gamePlayerId)
         REFERENCES game_player(id)
         ON DELETE CASCADE,
@@ -284,8 +285,6 @@ CREATE TABLE IF NOT EXISTS public.game_player_item (
         REFERENCES action_type(id),
     FOREIGN KEY (outcomeId)
         REFERENCES outcome_type(id),
-    -- FOREIGN KEY (goodId)
-    --     REFERENCES goodscore(id)
     FOREIGN KEY (positionId)
         REFERENCES position_type(id)
 )
@@ -311,7 +310,8 @@ CREATE TABLE IF NOT EXISTS public.game_player_double_item (
     actionId INT NOT NULL,
     outcomeId INT NOT NULL,
     let INT NOT NULL, -- origianl: stopGamePlayerId
-    -- goodId INT NOT NULL DEFAULT 0,
+    goodId INT NOT NULL DEFAULT 0,
+    timer DECIMAL(26,20) NOT NULL DEFAULT 0.00000000000000000000,
     FOREIGN KEY (gamePlayerId)
         REFERENCES game_player(id)
         ON DELETE CASCADE,
@@ -331,6 +331,41 @@ CREATE TABLE IF NOT EXISTS public.game_player_double_item (
         REFERENCES action_type(id),
     FOREIGN KEY (outcomeId)
         REFERENCES outcome_type(id)
+)
+
+
+CREATE TABLE IF NOT EXISTS public.goodscore(
+    id SERIAL PRIMARY KEY,
+    typeId INT NOT NULL DEFAULT 0,
+    gamePlayerItemIdStart INT NOT NULL,
+    startTimer DECIMAL(26,20) NOT NULL,
+    endTimer DECIMAL(26,20) NOT NULL,
+    gameId INT NOT NULL,
+    numberGame INT NOT NULL,
+    score VARCHAR(10) NOT NULL,
+    FOREIGN KEY (gamePlayerItemIdStart)
+        REFERENCES game_player_item(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (gameId)
+        REFERENCES game(id)
+        ON DELETE CASCADE
+)
+
+CREATE TABLE IF NOT EXISTS public.doublegoodscore (
+    id SERIAL PRIMARY KEY,
+    typeId INT NOT NULL DEFAULT 0,
+    gamePlayerItemIdStart INT NOT NULL,
+    startTimer DECIMAL(26,20) NOT NULL,
+    endTimer DECIMAL(26,20) NOT NULL,
+    gameId INT NOT NULL,
+    numberGame INT NOT NULL,
+    score VARCHAR(10) NOT NULL,
+    FOREIGN KEY (gamePlayerItemIdStart)
+        REFERENCES game_player_double_item(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (gameId)
+        REFERENCES game(id)
+        ON DELETE CASCADE
 )
 
 
